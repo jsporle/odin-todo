@@ -1,14 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
 * {
-border: 1px solid black;
-margin: 0;
-padding: 0;
+    /* border: 1px solid red; */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--text-color);
+    font-family: "Outfit", sans-serif;
+}
+
+:root {
+    --main-bg-color: rgb(200, 201, 253);
+    --secondary-bg-color: rgb(189, 190, 252);
+    --text-color: rgb(0, 0, 0);
+    --text-neutral: gray;
+    --font-default: 24px;
+    --verified-green: rgb(135, 200, 135);
+    --error-red: rgb(227, 70, 70);
 }
 
 body {
     display: flex;
     box-sizing: border-box;
+    color: var(--text-color);
+    font-size: var(--font-default);
+    line-height: 1.5;
+    padding: 1em;
     width: 100vw;
-    background-color: red;
+    background-color: var(--main-bg-color);
 }
 
 #sidebar-container {
@@ -17,9 +36,123 @@ body {
 
 .todo-item {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary-bg-color);
+    box-shadow: 1px 1px 4px 0px rgb(56, 55, 55);
+    border-radius: 0.5em;
+    padding: 2em;
     flex-flow: column;
 }
 
+.todo-title,
+.todo-title:active,
+.todo-title:focus {
+    border: none;
+    outline: none;
+    background-color: var(--secondary-bg-color);
+    font-size: calc(var(--font-default)*1.4);
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin-left: 0;
+    list-style-position: inside;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 1em;
+}
+
+li::before {
+    content: "•";
+    color: var(--text-color);
+    font-size: 1.2em;
+    padding-right: 0em;
+}
+
+li input[type="text"] {
+    flex: 1;
+}
+
+li input[type=text], 
+li input[type=text]:active,
+li input[type=text]:focus {
+    border: none;
+    outline: none;
+    font-size: inherit;
+    font-family: inherit;
+    background-color: var(--secondary-bg-color);
+}
+
+
 li:has(input[type="checkbox"]:checked) input[type="text"] {
     text-decoration: line-through;
+    color: var(--text-neutral);
+}
+
+li input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 2em;
+    height: 2em;
+    border: 1px solid var(--text-neutral);
+    border-radius: 2em;
+
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease-in-out;
+}
+
+li input[type="checkbox"]:hover {
+    border: 3px solid var(--text-neutral);
+}
+
+li input[type="checkbox"]:hover::after {
+    content: "✓";
+    color: var(--text-neutral);
+    font-weight: bold;
+}
+
+
+li input[type="checkbox"]:checked {
+    border-color: var(--verified-green);
+    background-color: var(--verified-green);
+}
+
+li input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: white;
+    font-weight: bold;
+}
+
+.delete-btn {
+    align-self: center;
+    width: 7em;
+    padding: 1em;
+    border: none;
+    outline: 2px solid white;
+    border-radius: 2em;
+    font-size: calc(var(--font-default)*0.7);
+    color: white;
+    background-color: var(--secondary-bg-color);
+    transition: all 200ms ease-in-out;
+}
+
+.delete-btn:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    outline: none;
+    background-color: var(--error-red);
 }

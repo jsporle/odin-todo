@@ -30,7 +30,7 @@ if (savedTasks.length > 0) {
         DisplayController.renderTodo(task, mainDisplay, stageView(task));
     });
 } else {
-    const defaultTask = new Todo("Default Task", [], "01/01/2099");
+    const defaultTask = new Todo("Add new title", [{ text: "add new list item", checked:false }], "01/01/2099");
     defaultTask.save();
     DisplayController.renderTodo(defaultTask, mainDisplay, stageView(defaultTask));
 };

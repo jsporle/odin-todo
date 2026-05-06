@@ -5,6 +5,7 @@ export const DisplayController = {
         
         const titleInput = document.createElement("input");
         titleInput.value = todoObj.title;
+        titleInput.classList.add("todo-title");
         titleInput.addEventListener("blur", ()=> {
             onUpdate("title", titleInput.value);
         }) 
@@ -12,6 +13,18 @@ export const DisplayController = {
         const inputID = `title-${todoObj.id}`;
         titleInput.id = inputID;
         titleInput.name = inputID;
+
+        titleInput.addEventListener("focus", () => {
+            if (titleInput.value === "Add new title") {
+            titleInput.value = "";
+            }
+        });
+
+        titleInput.addEventListener("blur", () => {
+            if (titleInput.value === "") {
+                titleInput.value = "Add new title";
+                }
+        });
 
         const ul = document.createElement("ul");
 
@@ -72,7 +85,16 @@ export const DisplayController = {
                 }
             });
 
+            textInput.addEventListener("focus", () => {
+                if (textInput.value === "add new list item") {
+                textInput.value = "";
+                }
+            });
+
             textInput.addEventListener("blur", () => {
+                if (textInput.value === "") {
+                textInput.value = "add new list item";
+                }
                 if (todoObj.list[index]) {
                     todoObj.list[index].text = textInput.value;todoObj.save();
                 }
@@ -96,6 +118,7 @@ export const DisplayController = {
     
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Delete";
+        deleteBtn.classList.add("delete-btn")
 
         const deleteBtnID = `delete-${todoObj.id}`;
         deleteBtn.id = deleteBtnID;

@@ -1,8 +1,12 @@
 export class Todo {
-    constructor(title, list = [], dueDate) {
+    constructor(
+        title = "Add new title",
+        list = [{ text: "add new list item", checked: false}], 
+        dueDate
+    ) {
         this.id = Date.now() + Math.random();
         this.title = title;
-        this.list = Array.isArray(list) ? list : [];
+        this.list = (Array.isArray(list) && list.length > 0) ? list : [{ text: "add new list item", checked: false }];
         this.dueDate = dueDate;
     }
 
