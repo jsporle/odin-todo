@@ -14,43 +14,79 @@
     --secondary-bg-color: rgb(200, 208, 252);
     --text-color: rgb(0, 0, 0);
     --text-neutral: gray;
-    --font-default: 24px;
+    --font-default: 18px;
     --verified-green: rgb(135, 200, 135);
     --error-red: rgb(227, 70, 70);
 }
 
 body {
     display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     box-sizing: border-box;
     color: var(--text-color);
     font-size: var(--font-default);
     line-height: 1.5;
-    width: 100vw;
     background-color: var(--main-bg-color);
 }
 
 #sidebar-container {
+    display: flex;
     width: 25vw;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1em;
     background-color: var(--secondary-bg-color);
     height: 100vh;
+    flex-shrink: 0;
     box-shadow: 0px 0px 3px 0px rgb(59, 59, 59);
+}
+
+.add-todo-btn {
+    padding: 1em;
+    background-color: var(--secondary-bg-color);
+    color: white;
+    border: none;
+    border-radius: 2em;
+    outline: 2px solid white;
+    transition: all 200ms ease-in-out;
+}
+
+.add-todo-btn:hover {
+    cursor: pointer;
+    outline: none;
+    background-color: rgb(120, 140, 255);
+    transform: scale(1.05);
 }
 
 #main-display-container {
     display: grid;
+    overflow-y: auto;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    align-items: start;
+    gap: 1.5em;
     padding: 1em;
+    flex: 1;
+    box-sizing: border-box;
 }
 
 .todo-item {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     background-color: var(--secondary-bg-color);
     box-shadow: 1px 1px 4px 0px rgb(56, 55, 55);
     border-radius: 0.5em;
-    padding: 2em;
-    gap: 1em;
-    flex-flow: column;
+    padding: 1.2em;
+    gap: 0.8em;
+    width: 100%;
+    min-width: 0;
+}
+
+.todo-title {
+    width: 100%;
+    max-width: 100%;
+    text-overflow: ellipsis;
 }
 
 .todo-title,
@@ -63,6 +99,7 @@ body {
 }
 
 ul {
+    width: 100%;
     display: flex;
     flex-direction: column;
     padding-left: 0;
@@ -88,6 +125,7 @@ li::before {
 }
 
 li input[type="text"] {
+    width: 100%;
     flex: 1;
 }
 
@@ -152,14 +190,15 @@ li input[type="checkbox"]:checked::after {
 
 .date-container {
     display: flex;
+    flex-wrap: wrap;
     align-items: centre;
     justify-content: flex-start;
     gap: 1em;
 }
 
 .todo-date {
-    margin-left: 3em;
-    padding: 1em 2em;
+    width: 100%;
+    padding: 0.5em;
     border: none;
     outline: none;
     border-radius: 2em;

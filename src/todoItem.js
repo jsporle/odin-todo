@@ -2,7 +2,7 @@ export class Todo {
     constructor(
         title = "Add new title",
         list = [{ text: "add new list item", checked: false}], 
-        dueDate
+        dueDate = new Date().toISOString().split("T")[0]
     ) {
         this.id = Date.now() + Math.random();
         this.title = title;

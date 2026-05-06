@@ -10,14 +10,9 @@ DisplayController.renderAddButton(sidebar, () => {
 
     const newTodo = new Todo();
 
-    DisplayController.renderTodo(newTodo, mainDisplay, {
-        onDelete: () => {
-            localStorage.removeItem(newTodo.id);
-        },
-        onUpdate: (key, value) => {
-            newTodo.updateProperty(key, value)
-        }
-    });
+    newTodo.save()
+
+    DisplayController.renderTodo(newTodo, mainDisplay, stageView(newTodo));
 });
 
 const handleUpdate = (todo, property, value) => {
@@ -33,18 +28,14 @@ const stageView = (task) => ({
     onUpdate: (property, value) => handleUpdate(task, property, value)
 });
 
-const savedTasks = StorageManager.getAllTodos().map(data => {
-    const task = new Todo(data.title, data.list, data.dueDate);
-    task.id = data.id;
-    return task;
-});
+const savedTasks = StorageManager.getAllTodos();
 
 if (savedTasks.length > 0) {
     savedTasks.forEach(task => {
         DisplayController.renderTodo(task, mainDisplay, stageView(task));
     });
 } else {
-    const defaultTask = new Todo("Add new title", [{ text: "add new list item", checked:false }], "01/01/2099");
+    const defaultTask = new Todo();
     defaultTask.save();
     DisplayController.renderTodo(defaultTask, mainDisplay, stageView(defaultTask));
 };
