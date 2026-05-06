@@ -4,11 +4,17 @@ export const DisplayController = {
         div.classList.add("todo-item");
         
         const titleInput = document.createElement("input");
-        titleInput.value = todoObj.title;
+        titleInput.value = todoObj.title || "Add new title";
         titleInput.classList.add("todo-title");
         titleInput.addEventListener("blur", ()=> {
-            onUpdate("title", titleInput.value);
-        }) 
+            let finalValue = titleInput.value.trim();
+            if (titleInput.value === "") {
+                titleInput.value = "Add new title";
+                onUpdate("title", "");
+            } else {
+                onUpdate("title", finalValue);
+            }
+        });
 
         const inputID = `title-${todoObj.id}`;
         titleInput.id = inputID;
@@ -18,12 +24,6 @@ export const DisplayController = {
             if (titleInput.value === "Add new title") {
             titleInput.value = "";
             }
-        });
-
-        titleInput.addEventListener("blur", () => {
-            if (titleInput.value === "") {
-                titleInput.value = "Add new title";
-                }
         });
 
         const ul = document.createElement("ul");
@@ -129,10 +129,39 @@ export const DisplayController = {
             div.remove();
         });
         
+        const dateContainer = document.createElement ("div");
+        dateContainer.classList.add("date-container");
+
+        const dateLabel = document.createElement("label");
+        dateLabel.textContent = "Deadline: "
+
+        const dateInputID = `date=${todoObj.id}`;
+        dateLabel.setAttribute("for", dateInputID);
+
+        const dateInput = document.createElement("input");
+        dateInput.type = "date";
+        dateInput.id = dateInputID;
+        dateInput.classList.add("todo-date");
+
+        const today = new Date().toISOString().split("T")[0];
+        dateInput.value = todoObj.dueDate || today;
+
+        dateInput.addEventListener("change", () => {
+            onUpdate("dueDate", dateInput.value);
+        });
+
+        dateContainer.append(dateLabel, dateInput);
+        
         const itemDueDate = document.createElement("span");
         itemDueDate.textContent = todoObj.dueDate;
 
-        div.append(titleInput, ul, itemDueDate, deleteBtn)
+        div.append(
+            titleInput,
+            ul, 
+            dateContainer, 
+            deleteBtn
+        );
+
         container.appendChild(div);
     }
 };

@@ -42,6 +42,7 @@ body {
     box-shadow: 1px 1px 4px 0px rgb(56, 55, 55);
     border-radius: 0.5em;
     padding: 2em;
+    gap: 1em;
     flex-flow: column;
 }
 
@@ -125,6 +126,11 @@ li input[type="checkbox"]:hover::after {
     font-weight: bold;
 }
 
+li:has(input[type="checkbox"]:hover) input[type="text"] {
+    color: var(--text-neutral);
+    transition: color 200ms ease-in-out;
+}
+
 
 li input[type="checkbox"]:checked {
     border-color: var(--verified-green);
@@ -135,6 +141,30 @@ li input[type="checkbox"]:checked::after {
     content: "✓";
     color: white;
     font-weight: bold;
+}
+
+.date-container {
+    display: flex;
+    align-items: centre;
+    justify-content: flex-start;
+    gap: 1em;
+}
+
+.todo-date {
+    margin-left: 3em;
+    padding: 1em 2em;
+    border: none;
+    outline: none;
+    border-radius: 2em;
+}
+
+.todo-date::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    transition: transform 200ms ease-in-out;
+}
+
+.todo-date::-webkit-calendar-picker-indicator:hover {
+    transform: scale(1.2);
 }
 
 .delete-btn {
