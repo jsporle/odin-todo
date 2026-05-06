@@ -29,11 +29,24 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
 
     const createListLine = (itemData, index) => {
         const li = document.createElement("li")
-        
-        const textInput = document.createElement("input");
-        textInput.type = "text"
+        const textInput = document.createElement("textarea");
+
+        const adjustHeight = (el) => {
+            el.style.height = "auto"
+            el.style.height = (el.scrollHeight) + "px";
+        };
+
+        textInput.value = itemData.text || "";
+
         const textID = `todo-${todoObj.id}-item-${index}`;
         textInput.id = textID;
+        textInput.rows = 1;
+
+        textInput.addEventListener("input", function() {
+            adjustHeight(this);
+        });
+
+        setTimeout(() => adjustHeight(textInput), 0);
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -75,7 +88,7 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
                 refreshList();
 
                 setTimeout(() => {
-                    const allInputs = ul.querySelectorAll('input[type="text"]');
+                    const allInputs = ul.querySelectorAll("textarea");
                     const targetIndex = index > 0 ? index -1 : 0;
                     if (allInputs[targetIndex]) {
                         allInputs[targetIndex].focus();
