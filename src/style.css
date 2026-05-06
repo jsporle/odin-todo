@@ -10,8 +10,8 @@
 }
 
 :root {
-    --main-bg-color: rgb(200, 201, 253);
-    --secondary-bg-color: rgb(189, 190, 252);
+    --main-bg-color: rgb(209, 217, 255);
+    --secondary-bg-color: rgb(200, 208, 252);
     --text-color: rgb(0, 0, 0);
     --text-neutral: gray;
     --font-default: 24px;
@@ -25,13 +25,20 @@ body {
     color: var(--text-color);
     font-size: var(--font-default);
     line-height: 1.5;
-    padding: 1em;
     width: 100vw;
     background-color: var(--main-bg-color);
 }
 
 #sidebar-container {
-    width: 250px;
+    width: 25vw;
+    background-color: var(--secondary-bg-color);
+    height: 100vh;
+    box-shadow: 0px 0px 3px 0px rgb(59, 59, 59);
+}
+
+#main-display-container {
+    display: grid;
+    padding: 1em;
 }
 
 .todo-item {

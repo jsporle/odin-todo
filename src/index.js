@@ -4,7 +4,21 @@ import { StorageManager } from "./StorageManager.js";
 import { Todo } from "./todoItem.js";
 import { DisplayController } from "./displayController.js";
 
-const { mainDisplay } = loadLayout();
+const { sidebar, mainDisplay } = loadLayout();
+
+DisplayController.renderAddButton(sidebar, () => {
+
+    const newTodo = new Todo();
+
+    DisplayController.renderTodo(newTodo, mainDisplay, {
+        onDelete: () => {
+            localStorage.removeItem(newTodo.id);
+        },
+        onUpdate: (key, value) => {
+            newTodo.updateProperty(key, value)
+        }
+    });
+});
 
 const handleUpdate = (todo, property, value) => {
     todo.updateProperty(property, value);
