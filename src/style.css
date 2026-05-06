@@ -19,3 +19,7 @@ body {
     display: flex;
     flex-flow: column;
 }
+
+li:has(input[type="checkbox"]:checked) input[type="text"] {
+    text-decoration: line-through;
+}
