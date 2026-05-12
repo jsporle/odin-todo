@@ -5,12 +5,12 @@ const autoResizeListItem = (textarea) => {
 
 const addNewTaskItem = (todoObj, index) => {
     todoObj.list.splice(index + 1, 0, { text: "", checked: false });
-    todoObj.save();
+    onUpdate("list", todoObj.list);
 };
 
 const removeTaskItem = (todoObj, index) => {
     todoObj.list.splice(index, 1);
-    todoObj.save();
+    onUpdate("list", todoObj.list);
 };
 
 const handleKeyboardNavigation = (e, index, todoObj, refreshCallback) => {
@@ -73,7 +73,7 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
 
     const ul = document.createElement("ul");
 
-    const createListLine = (itemData, index) => {
+    const createListLine = (itemData, index, onUpdate) => {
         const li = document.createElement("li")
         const textInput = document.createElement("textarea");
         const checkbox = document.createElement("input");
@@ -91,14 +91,14 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
                 refreshList();
                 const nextInput = document.getElementById(`todo-${todoObj.id}-item-${newFocusIndex}`);
                 if (nextInput) nextInput.focus();
-            });
+            }, onUpdate);
         });
 
         checkbox.type = "checkbox";
         checkbox.checked = itemData.checked;
         checkbox.addEventListener("change", () => {
             todoObj.list[index].checked = checkbox.checked;
-            todoObj.save();
+            onUpdate("list", todoObj.list);
         });      
 
         li.append(textInput, checkbox);
