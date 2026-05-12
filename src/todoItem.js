@@ -12,17 +12,5 @@ export class Todo {
 
     updateProperty(property, newValue) {
         this[property] = newValue;
-        this.save();
-    }
-
-    updateListItem(index, text, checked) {
-        if (this.list[index] !== undefined) {
-            this.list[index] = { text, checked };
-            this.save();
-        }
-    }
-
-    save() {
-        localStorage.setItem(this.id, JSON.stringify(this));
     }
 }
