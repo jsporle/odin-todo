@@ -3,30 +3,30 @@ const autoResizeListItem = (textarea) => {
     textarea.style.height = (textarea.scrollHeight) + "px";
 };
 
-const addNewTaskItem = (todoObj, index) => {
+const addNewTaskItem = (todoObj, index, onUpdate) => {
     todoObj.list.splice(index + 1, 0, { text: "", checked: false });
     onUpdate("list", todoObj.list);
 };
 
-const removeTaskItem = (todoObj, index) => {
+const removeTaskItem = (todoObj, index, onUpdate) => {
     todoObj.list.splice(index, 1);
     onUpdate("list", todoObj.list);
 };
 
-const handleKeyboardNavigation = (e, index, todoObj, refreshCallback) => {
+const handleKeyboardNavigation = (e, index, todoObj, refreshCallback, onUpdate) => {
     if (e.key === "Enter") {
         e.preventDefault();
-        addNewTaskItem(todoObj, index);
+        addNewTaskItem(todoObj, index, onUpdate);
         refreshCallback(index + 1);
     } 
     else if (e.key === "Backspace" && e.target.value === "" && todoObj.list.length > 1) {
         e.preventDefault();
-        removeTaskItem(todoObj, index);
+        removeTaskItem(todoObj, index, onUpdate);
         refreshCallback(index > 0 ? index - 1 : 0);
     };
 };
 
-const handleTextUpdate = (textInput, index, todoObj) => {
+const handleTextUpdate = (textInput, index, todoObj, onUpdate) => {
     textInput.addEventListener("focus", () => {
             if (textInput.value === "add new list item") {
             textInput.value = "";
@@ -39,7 +39,7 @@ const handleTextUpdate = (textInput, index, todoObj) => {
             }
             if (todoObj.list[index]) {
                 todoObj.list[index].text = textInput.value;
-                todoObj.save();
+                onUpdate("list", todoObj.list);
             }
         });
 };
@@ -78,7 +78,7 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
         const textInput = document.createElement("textarea");
         const checkbox = document.createElement("input");
 
-        handleTextUpdate(textInput, index, todoObj);
+        handleTextUpdate(textInput, index, todoObj, onUpdate);
 
         textInput.value = itemData.text || "";
         textInput.id = `todo-${todoObj.id}-item-${index}`;
@@ -116,7 +116,7 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
         }
 
         todoObj.list.forEach((item, index) => {
-            ul.appendChild(createListLine(item, index));
+            ul.appendChild(createListLine(item, index, onUpdate));
         });
     };
 
