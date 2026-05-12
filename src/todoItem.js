@@ -5,7 +5,7 @@ export class Todo {
         dueDate = new Date().toISOString().split("T")[0],
         priority = "1"
     ) {
-        this.id = Date.now() + Math.random();
+        this.id = self.crypto.randomUUID();
         this.title = title;
         this.list = (Array.isArray(list) && list.length > 0) ? list : [{ text: "add new list item", checked: false }];
         this.dueDate = dueDate;
