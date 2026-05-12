@@ -171,7 +171,13 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
     dateInput.classList.add("todo-date");
 
     const today = new Date().toISOString().split("T")[0];
-    dateInput.value = todoObj.dueDate || today;
+    
+    if (!todoObj.dueDate) {
+        todoObj.dueDate = today;
+        onUpdate("dueDate", today);
+    }
+    
+    dateInput.value = todoObj.dueDate;
 
     dateInput.addEventListener("change", () => {
         onUpdate("dueDate", dateInput.value);
