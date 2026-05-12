@@ -1,3 +1,49 @@
+const autoResizeListItem = (textarea) => {
+    textarea.style.height = "auto";
+    textarea.style.height = (textarea.scrollHeight) + "px";
+};
+
+const addNewTaskItem = (todoObj, index) => {
+    todoObj.list.splice(index + 1, 0, { text: "", checked: false });
+    todoObj.save();
+};
+
+const removeTaskItem = (todoObj, index) => {
+    todoObj.list.splice(index, 1);
+    todoObj.save();
+};
+
+const handleKeyboardNavigation = (e, index, todoObj, refreshCallback) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        addNewTaskItem(todoObj, index);
+        refreshCallback(index + 1);
+    } 
+    else if (e.key === "Backspace" && e.target.value === "" && todoObj.list.length > 1) {
+        e.preventDefault();
+        removeTaskItem(todoObj, index);
+        refreshCallback(index > 0 ? index - 1 : 0);
+    };
+};
+
+const handleTextUpdate = (textInput, index, todoObj) => {
+    textInput.addEventListener("focus", () => {
+            if (textInput.value === "add new list item") {
+            textInput.value = "";
+            }
+        });
+
+        textInput.addEventListener("blur", () => {
+            if (textInput.value === "") {
+            textInput.value = "add new list item";
+            }
+            if (todoObj.list[index]) {
+                todoObj.list[index].text = textInput.value;
+                todoObj.save();
+            }
+        });
+};
+
 export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
     const div = document.createElement("div");
     div.classList.add("todo-item");
@@ -30,96 +76,44 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
     const createListLine = (itemData, index) => {
         const li = document.createElement("li")
         const textInput = document.createElement("textarea");
+        const checkbox = document.createElement("input");
 
-        const adjustHeight = (el) => {
-            el.style.height = "auto"
-            el.style.height = (el.scrollHeight) + "px";
-        };
+        handleTextUpdate(textInput, index, todoObj);
 
         textInput.value = itemData.text || "";
-
-        const textID = `todo-${todoObj.id}-item-${index}`;
-        textInput.id = textID;
+        textInput.id = `todo-${todoObj.id}-item-${index}`;
         textInput.rows = 1;
 
-        textInput.addEventListener("input", function() {
-            adjustHeight(this);
-        });
-
-        setTimeout(() => adjustHeight(textInput), 0);
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        const checkID = `check-${todoObj.id}-item-${index}`;
-        checkbox.id = checkID;
-        checkbox.name = checkID;
-        checkbox.checked = itemData.checked;
-
-        checkbox.addEventListener("change", () => {
-            todoObj.list[index].checked = checkbox.checked;
-
-            todoObj.save();
-        })
-
-        textInput.value = itemData.text;
+        textInput.addEventListener("input", () => autoResizeListItem(textInput));
 
         textInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                const newIndex = index + 1;
-
-                todoObj.list.splice(index + 1, 0, { text: "", checked: false});
-                todoObj.save();
-
+            handleKeyboardNavigation(e, index, todoObj, (newFocusIndex) => {
                 refreshList();
-                
-                setTimeout(() => {
-                    const nextID = `todo-${todoObj.id}-item-${newIndex}`;
-                    const nextInput = document.getElementById(nextID)
-                    if (nextInput) {
-                        nextInput.focus();
-                    }
-                }, 0);
-            } 
-            else if (e.key === "Backspace" && textInput.value === "" && todoObj.list.length > 1) {
-                e.preventDefault()
-                todoObj.list.splice(index, 1);
-                todoObj.save()
-                refreshList();
-
-                setTimeout(() => {
-                    const allInputs = ul.querySelectorAll("textarea");
-                    const targetIndex = index > 0 ? index -1 : 0;
-                    if (allInputs[targetIndex]) {
-                        allInputs[targetIndex].focus();
-                    }
-                }, 0);
-            }
+                const nextInput = document.getElementById(`todo-${todoObj.id}-item-${newFocusIndex}`);
+                if (nextInput) nextInput.focus();
+            });
         });
 
-        textInput.addEventListener("focus", () => {
-            if (textInput.value === "add new list item") {
-            textInput.value = "";
-            }
-        });
+        checkbox.type = "checkbox";
+        checkbox.checked = itemData.checked;
+        checkbox.addEventListener("change", () => {
+            todoObj.list[index].checked = checkbox.checked;
+            todoObj.save();
+        });      
 
-        textInput.addEventListener("blur", () => {
-            if (textInput.value === "") {
-            textInput.value = "add new list item";
-            }
-            if (todoObj.list[index]) {
-                todoObj.list[index].text = textInput.value;todoObj.save();
-            }
-        });
-
-        li.appendChild(textInput);
-        li.appendChild(checkbox);
+        li.append(textInput, checkbox);
+        setTimeout(() => autoResizeListItem(textInput),0);
         return li;
     };
 
     const refreshList = () => {
-        ul.innerHTML = "";
-        if (todoObj.list.length === 0) todoObj.list.push({ text: "", checked: false});
+        while (ul.firstChild) {
+            ul.removeChild(ul.firstChild);
+        }
+
+        if (todoObj.list.length === 0) {
+            todoObj.list.push({ text: "", checked: false});
+        }
 
         todoObj.list.forEach((item, index) => {
             ul.appendChild(createListLine(item, index));
