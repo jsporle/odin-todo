@@ -23,10 +23,12 @@ export const StorageManager = (storageEngine) => {
                         rawData.dueDate,
                         rawData.priority);
                     todo.id = rawData.id;
+                    todo.createdAt = rawData.createdAt || Date.now();
+                    
                     todos.push(todo);
                 }
             }
-            return todos;
+            return todos.sort((a, b) => a.createdAt - b.createdAt);
         }
     }
 };
