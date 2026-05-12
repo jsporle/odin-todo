@@ -45,18 +45,23 @@ const handleTextUpdate = (textInput, index, todoObj, onUpdate) => {
 };
 
 const setupPrioritySlider = (slider, label, initialValue) => {
-    slider.type = "range";
-    slider.mix = "1";
-    slider.max = "3";
-    slider.step = "1";
-    slider.value = initialValue;
+    slider.setAttribute("type", "range");
+    slider.setAttribute("min", "1");
+    slider.setAttribute("max", "3");
+    slider.setAttribute("step", "1");
+
+    slider.value = initialValue || "1";
 
     const updateLabel = (val) => {
-        const text = val === "3" ? "High" : val === "2" ? "Medium" : "Low";
-        label.textContent = `Priority: ${text}`;
+        const priorityMap = {
+            "1" : "Low",
+            "2" : "Medium",
+            "3" : "High"
+        };
+        label.textContent = `Priority: ${priorityMap[val] || "Low"}`;
     };
 
-    updateLabel(initialValue);
+    updateLabel(slider.value);
     return updateLabel
 };
 
