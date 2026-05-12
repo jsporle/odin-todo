@@ -12,9 +12,9 @@ export const StorageManager = (storageEngine) => {
     
         getAllTodos() {
             const todos = []
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                const rawData = JSON.parse(localStorage.getItem(key));
+            for (let i = 0; i < storageEngine.length; i++) {
+                const key = storageEngine.key(i);
+                const rawData = JSON.parse(storageEngine.getItem(key));
 
                 if (rawData && rawData.title !== undefined) {
                     const todo = new Todo(
