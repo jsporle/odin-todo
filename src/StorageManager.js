@@ -17,12 +17,16 @@ export const StorageManager = (storageEngine) => {
                 const rawData = JSON.parse(localStorage.getItem(key));
 
                 if (rawData && rawData.title !== undefined) {
-                    const todo = new Todo(rawData.title, rawData.list, rawData.dueDate);
+                    const todo = new Todo(
+                        rawData.title, 
+                        rawData.list, 
+                        rawData.dueDate,
+                        rawData.priority);
                     todo.id = rawData.id;
                     todos.push(todo);
                 }
             }
             return todos;
         }
-    };
+    }
 };

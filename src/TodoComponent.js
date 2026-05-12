@@ -44,6 +44,22 @@ const handleTextUpdate = (textInput, index, todoObj, onUpdate) => {
         });
 };
 
+const setupPrioritySlider = (slider, label, initialValue) => {
+    slider.type = "range";
+    slider.mix = "1";
+    slider.max = "3";
+    slider.step = "1";
+    slider.value = initialValue;
+
+    const updateLabel = (val) => {
+        const text = val === "3" ? "High" : val === "2" ? "Medium" : "Low";
+        label.textContent = `Priority: ${text}`;
+    };
+
+    updateLabel(initialValue);
+    return updateLabel
+};
+
 export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
     const div = document.createElement("div");
     div.classList.add("todo-item");
@@ -158,10 +174,29 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
 
     dateContainer.append(dateLabel, dateInput);
 
+    const priorityContainer = document.createElement("div");
+    priorityContainer.classList.add("priority-container");
+    const priorityLabel = document.createElement("label");
+    const priorityInput = document.createElement("input");
+
+    const syncLabel = setupPrioritySlider(priorityInput, priorityLabel, todoObj.priority);
+
+    priorityInput.addEventListener("input", () => {
+        syncLabel(priorityInput.value);
+    });
+
+    priorityInput.addEventListener("change", () => {
+        onUpdate("priority", priorityInput.value);
+    });
+
+    priorityContainer.append(priorityLabel, priorityInput);
+
+
     div.append(
         titleInput,
         ul, 
-        dateContainer, 
+        dateContainer,
+        priorityContainer,
         deleteBtn
     );
 
