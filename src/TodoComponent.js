@@ -44,7 +44,7 @@ const handleTextUpdate = (textInput, index, todoObj, onUpdate) => {
         });
 };
 
-const setupPrioritySlider = (slider, label, initialValue) => {
+const setupPrioritySlider = (slider, label, initialValue, itemElement) => {
     slider.setAttribute("type", "range");
     slider.setAttribute("min", "1");
     slider.setAttribute("max", "3");
@@ -59,6 +59,11 @@ const setupPrioritySlider = (slider, label, initialValue) => {
             "3" : "High"
         };
         label.textContent = `Priority: ${priorityMap[val] || "Low"}`;
+
+
+        itemElement.classList.remove("priority-1", "priority-2", "priority-3");
+
+        itemElement.classList.add(`priority-${val}`);
     };
 
     updateLabel(slider.value);
@@ -190,7 +195,11 @@ export const renderTodo = (todoObj, container, { onDelete, onUpdate }) => {
     const priorityLabel = document.createElement("label");
     const priorityInput = document.createElement("input");
 
-    const syncLabel = setupPrioritySlider(priorityInput, priorityLabel, todoObj.priority);
+    priorityInput.type = "range";
+    priorityInput.id = `priority-${todoObj.id}`;
+    priorityLabel.setAttribute("for", priorityInput.id)
+
+    const syncLabel = setupPrioritySlider(priorityInput, priorityLabel, todoObj.priority, div);
 
     priorityInput.addEventListener("input", () => {
         syncLabel(priorityInput.value);
