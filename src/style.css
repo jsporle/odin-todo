@@ -10,8 +10,8 @@
 }
 
 :root {
-    --main-bg-color: rgb(209, 217, 255);
-    --secondary-bg-color: rgb(200, 208, 252);
+    --main-bg-color: rgb(204, 201, 187);
+    --secondary-bg-color: rgb(58, 58, 51);
     --text-color: rgb(0, 0, 0);
     --text-neutral: gray;
     --font-default: 18px;
@@ -75,7 +75,6 @@ body {
 .todo-item {
     display: flex;
     flex-direction: column;
-    background-color: var(--secondary-bg-color);
     box-shadow: 1px 1px 4px 0px rgb(56, 55, 55);
     border-radius: 0.5em;
     padding: 1.2em;
@@ -95,7 +94,7 @@ body {
 .todo-title:focus {
     border: none;
     outline: none;
-    background-color: var(--secondary-bg-color);
+    background-color: inherit;
     font-size: calc(var(--font-default)*1.4);
 }
 
@@ -131,7 +130,7 @@ li textarea {
     outline: none;
     font-size: inherit;
     font-family: inherit;
-    background-color: var(--secondary-bg-color);
+    background-color: inherit;
 }
 
 li::before {
@@ -233,6 +232,35 @@ li input[type="checkbox"]:checked::after {
     transform: scale(1.2);
 }
 
+.priority-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0.5em;
+}
+
+.priority-container input[type="range"] {
+    width: 80%;
+    cursor: pointer;
+}
+
+.priority-container label {
+    order: 2;
+}
+
+.todo-item.priority-1 {
+    background-color: rgb(129, 188, 129);
+}
+
+.todo-item.priority-2 {
+    background-color: rgb(233, 209, 131);
+}
+
+.todo-item.priority-3 {
+    background-color: rgb(207, 147, 147);
+}
+
 .delete-btn {
     align-self: center;
     width: 7em;
@@ -242,8 +270,9 @@ li input[type="checkbox"]:checked::after {
     border-radius: 2em;
     font-size: calc(var(--font-default)*0.7);
     color: white;
-    background-color: var(--secondary-bg-color);
-    transition: all 200ms ease-in-out;
+    background-color: inherit;
+    transition: transform 200ms ease-in-out,
+                outline 200ms ease-in-out;
 }
 
 .delete-btn:hover {
@@ -251,4 +280,5 @@ li input[type="checkbox"]:checked::after {
     transform: scale(1.05);
     outline: none;
     background-color: var(--error-red);
+    transition: background-color 200ms ease, transform 200ms ease-in-out;
 }
